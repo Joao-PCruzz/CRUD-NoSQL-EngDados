@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Adicionando o Maven ao projeto -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Edu.ufs define a organização -->
+    <groupId>br.edu.ufs</groupId>
+    <artifactId>trabalho-engenharia-dados</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- Avisa para o Maven padronizar tudo na base Java 17 -->
+    <!-- UTF-8 garante que coisas como ç sejam lidas -->
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- Tudo que o projeto precisar de bibliotecas externas entra aqui como dependências -->
+    <dependencies>
+        <!-- Dependência oficial do MongoDB Java Driver -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+        <!-- Essa dependência automatiza a conversão de objeto para JSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.17.1</version>
+        </dependency>
+        
+        <!-- Essa biblioteca oferece suporte para LocalDate em Java -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.17.1</version>
+        </dependency>
+    </dependencies>
+    
+</project>

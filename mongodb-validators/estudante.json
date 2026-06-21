@@ -1,6 +1,6 @@
 {
   "$jsonSchema": {
-    "bsonType": "oject",
+    "bsonType": "object",
     "required": [
       "mat_estudante",
       "usuario"
