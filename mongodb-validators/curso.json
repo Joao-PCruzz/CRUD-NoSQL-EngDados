@@ -1,0 +1,54 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "idCurso",
+      "nome",
+      "turno"
+    ],
+    "additionalProperties": false,
+    "description": "Coleção para curso, proibe a definição de propriedades adicionais e se baseia na table curso do sql",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId",
+        "description": "Identificador único gerado automaticamente pelo MongoDB"
+      },
+      "idCurso": {
+        "bsonType": "int",
+        "description": "idCurso deve ser um número inteiro e é obrigatório"
+      },
+      "nome": {
+        "bsonType": "string",
+        "description": "nome deve ser uma string/texto, único em conjunto e é obrigatório"
+      },
+      "grau": {
+        "enum": [
+          "Bacharelado",
+          "Licenciatura Plena"
+        ],
+        "description": "o grau só aceita: Bacharelado e Licenciatura Plena"
+      },
+      "turno": {
+        "enum": [
+          "Matutino",
+          "Vespertino",
+          "Noturno"
+        ],
+        "description": "turno é obrigatório, único em conjunto e só aceita os valores: Matutino, Vespertino ou Noturno"
+      },
+      "campus": {
+        "bsonType": "string",
+        "description": "O campus é unico em conjunto e é uma string/texto"
+      },
+      "nivel": {
+        "enum": [
+          "Graduação",
+          "Mestrado",
+          "Doutorado",
+          "Lato"
+        ],
+        "description": "O nível é unico em conjunto e só aceita: Graduação, Mestrado, Doutorado e Lato"
+      }
+    }
+  }
+}

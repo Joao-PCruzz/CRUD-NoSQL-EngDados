@@ -1,0 +1,144 @@
+{
+  "$jsonSchema": {
+    "bsonType": "oject",
+    "required": [
+      "mat_estudante",
+      "usuario"
+    ],
+    "additionalProperties": false,
+    "description": "Validação da tabela estudante com a incorporação correta das relações com usuario, vinculo e plano",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId",
+        "description": "Identificador único gerado automaticamente pelo MongoDB"
+      },
+      "mat_estudante": {
+        "bsonType": "string",
+        "description": "Matrícula do estudante, PK da tabela"
+      },
+      "MC": {
+        "bsonType": [
+          "double",
+          "null"
+        ],
+        "description": "Média do aluno, lastreado de DECIMAL(2) para double, pode iniciar nulo"
+      },
+      "ano_ingresso": {
+        "bsonType": "int",
+        "description": "Ano em que o estudante ingressou"
+      },
+      "usuario": {
+        "bsonType": "object",
+        "required": [
+          "cpf",
+          "nome",
+          "login",
+          "senha"
+        ],
+        "additionalProperties": false,
+        "description": "Dados civis e de login incorporados da tabela relacional usuario (de forma 1:1)",
+        "properties": {
+          "cpf": {
+            "bsonType": "long",
+            "description": "CPF do estudante mapeado de NUMERIC(13) para o tipo long"
+          },
+          "nome": {
+            "bsonType": "string",
+            "description": "Nome completo do estudante - Obrigatório"
+          },
+          "data_nascimento": {
+            "bsonType": "string",
+            "description": "Data de nascimento em formato texto (AAAA-MM-DD)"
+          },
+          "email": {
+            "bsonType": "array",
+            "items": {
+              "bsonType": "string"
+            },
+            "description": "Lista (array) de e-mails do usuário"
+          },
+          "telefone": {
+            "bsonType": "array",
+            "items": {
+              "bsonType": "string"
+            },
+            "description": "Lista (array) de telefones do usuário"
+          },
+          "login": {
+            "bsonType": "string",
+            "description": "Login único para acesso ao sistema"
+          },
+          "senha": {
+            "bsonType": "string",
+            "description": "Senha em texto"
+          }
+        }
+      },
+      "vinculo": {
+        "bsonType": "array",
+        "description": "Lista de cursos que o aluno possui vínculo (Desnormalização da tabela N:M Vinculo)",
+        "items": {
+          "bsonType": "object",
+          "required": [
+            "idCurso",
+            "data_entrada"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "idCurso": {
+              "bsonType": "int",
+              "description": "ID de referência do curso, FK de curso"
+            },
+            "data_entrada": {
+              "bsonType": "string",
+              "description": "Data de início no curso (AAAA-MM-DD)"
+            },
+            "status": {
+              "enum": [
+                "Ativo",
+                "Cancelada",
+                "Formando",
+                "Graduado"
+              ],
+              "description": "Status atual do estudante no curso (Enum equivalente do SQL)"
+            },
+            "data_saida": {
+              "bsonType": [
+                "string",
+                "null"
+              ],
+              "description": "Data de conclusão/saída no curso (AAAA-MM-DD), pode ser nula"
+            }
+          }
+        }
+      },
+      "plano": {
+        "bsonType": "array",
+        "description": "Lista de planos/projetos do estudante (Desnormalização da tabela Plano)",
+        "items": {
+          "bsonType": "object",
+          "required": [
+            "id_Projeto",
+            "mat_professor",
+            "ano"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "id_Projeto": {
+              "bsonType": "int",
+              "description": "Código do projeto associado"
+            },
+            "mat_professor": {
+              "bsonType": "string",
+              "description": "Matrícula do professor orientador"
+            },
+            "ano": {
+              "bsonType": "string",
+              "description": "Ano de vigência do plano"
+            }
+          }
+        }
+      }
+    }
+  }
+}
