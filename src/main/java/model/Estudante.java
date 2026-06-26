@@ -2,10 +2,13 @@ package model;
 
 import java.math.BigDecimal;
 
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
 public class Estudante {
    
     private String mat_estudante; //Faz parte do "universidade.matricula"
-    private BigDecimal mc; //Para mapear o tipo DECIMAL(2)
+    @BsonProperty("MC")
+    private BigDecimal mc; // @BsonProperty garante que o campo seja gravado como "MC" (maiúsculas) no MongoDB
     private Integer ano_ingresso;
     private Usuario usuario; 
 

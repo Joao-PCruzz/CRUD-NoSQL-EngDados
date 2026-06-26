@@ -1,5 +1,5 @@
 package dao;
 
-public class EstudanteMongoDAO {
+public class EstudanteMongoDAO extends BaseMonDao {
     
 }
