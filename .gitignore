@@ -25,3 +25,6 @@ replay_pid*
 
 #Ignorar a pasta que possui a conexão
 .vscode/
+
+.idea/
+*.iml

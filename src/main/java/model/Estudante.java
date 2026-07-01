@@ -1,6 +1,7 @@
 package model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
@@ -10,16 +11,19 @@ public class Estudante {
     @BsonProperty("MC")
     private BigDecimal mc; // @BsonProperty garante que o campo seja gravado como "MC" (maiúsculas) no MongoDB
     private Integer ano_ingresso;
-    private Usuario usuario; 
+    private Usuario usuario;
+
+    private List<Vinculo> vinculo;
 
     //Construtores
     public Estudante() {
     }
-    public Estudante(String mat_estudante, BigDecimal mc, Integer ano_ingresso, Usuario usuario) {
+    public Estudante(String mat_estudante, BigDecimal mc, Integer ano_ingresso, Usuario usuario, List<Vinculo> vinculo) {
         this.mat_estudante = mat_estudante;
         this.usuario = usuario;
         this.mc = mc;
         this.ano_ingresso = ano_ingresso;
+        this.vinculo = vinculo;
     }
 
     //Metodos Getters and Setters
@@ -47,6 +51,12 @@ public class Estudante {
     public void setAno_ingresso(Integer ano_ingresso) {
         this.ano_ingresso = ano_ingresso;
     }
+    public List<Vinculo> getVinculo() {
+        return vinculo;
+    }
+    public void setVinculo(List<Vinculo> vinculo) {
+        this.vinculo = vinculo;
+    }
 
     @Override
     public String toString() {
@@ -55,6 +65,7 @@ public class Estudante {
                 ", cpf=" + (usuario != null ? usuario.getCpf() : "null") +
                 ", mc=" + mc +
                 ", ano_ingresso=" + ano_ingresso +
+                ", qtd_vinculos=" + (vinculo != null ? vinculo.size() : 0) +
                 '}';
     }
 }
