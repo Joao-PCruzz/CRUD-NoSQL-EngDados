@@ -1,0 +1,28 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "id_turma",
+      "id_horario"
+    ],
+    "additionalProperties": false,
+    "description": "Validação da coleção alocacao",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "id_turma": {
+        "bsonType": "int",
+        "description": "ID da turma sendo alocada"
+      },
+      "id_sala": {
+        "bsonType": "int",
+        "description": "Código da sala utilizada"
+      },
+      "id_horario": {
+        "bsonType": "int",
+        "description": "ID do horário da aula"
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "id_horario",
+      "dia",
+      "slot"
+    ],
+    "additionalProperties": false,
+    "description": "Validação da coleção horario",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "id_horario": {
+        "bsonType": "int",
+        "description": "ID do horário - PK"
+      },
+      "dia": {
+        "bsonType": "string",
+        "description": "Dia da semana"
+      },
+      "slot": {
+        "bsonType": "int",
+        "description": "lastreado de smallint"
+      }
+    }
+  }
+}

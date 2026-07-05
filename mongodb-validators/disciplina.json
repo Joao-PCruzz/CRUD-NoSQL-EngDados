@@ -1,0 +1,41 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "cod_disc",
+      "nome",
+      "creditos",
+      "pre_req",
+      "depto_responsavel"
+    ],
+    "additionalProperties": false,
+    "description": "Validação da coleção disciplina",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "cod_disc": {
+        "bsonType": "string",
+        "description": "Código alfanumérico da disciplina - PK"
+      },
+      "nome": {
+        "bsonType": "string",
+        "description": "Nome da disciplina"
+      },
+      "creditos": {
+        "bsonType": "int",
+        "minimum": 1,
+        "maximum": 11,
+        "description": "Créditos da disciplina"
+      },
+      "pre_req": {
+        "bsonType": "string",
+        "description": "Pré-requisito da disciplina (FK)"
+      },
+      "depto_responsave": {
+        "bsonType": "int",
+        "description": "ID de referência do departamento (FK)"
+      }
+    }
+  }
+}

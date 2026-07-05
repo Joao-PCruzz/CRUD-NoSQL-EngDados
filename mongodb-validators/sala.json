@@ -1,0 +1,26 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "id_sala"
+    ],
+    "additionalProperties": false,
+    "description": "Validação da coleção sala",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "id_sala": {
+        "bsonType": "int",
+        "description": "Código identificador da sala (Ex: \"101\") - PK"
+      },
+      "descricao": {
+        "bsonType": [
+          "string",
+          "null"
+        ],
+        "description": "Descrição sobre a sala"
+      }
+    }
+  }
+}

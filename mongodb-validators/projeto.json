@@ -1,0 +1,23 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "id_projeto"
+    ],
+    "additionalProperties": false,
+    "description": "Validação da coleção projeto",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "id_projeto": {
+        "bsonType": "int",
+        "description": "Código identificador do projeto - PK"
+      },
+      "descricao": {
+        "bsonType": "string",
+        "description": "Descrição sobre o projeto em questão"
+      }
+    }
+  }
+}

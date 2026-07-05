@@ -1,0 +1,37 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "cod_Depto",
+      "nome"
+    ],
+    "additionalProperties": false,
+    "description": "Validação da coleção departamento",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "cod_Depto": {
+        "bsonType": "int",
+        "description": "ID único do departamento - PK"
+      },
+      "nome": {
+        "bsonType": "string",
+        "description": "Nome completo do departamento"
+      },
+      "chefe": {
+        "bsonType": "string",
+        "description": "Matricula do chefe do departamento"
+      },
+      "orcamento": {
+        "bsonType": "int",
+        "minimum": 1,
+        "description": "Orçamento do departamento"
+      },
+      "comissal": {
+        "bsonType": "double",
+        "description": "Comissão que o departamento recebe"
+      }
+    }
+  }
+}

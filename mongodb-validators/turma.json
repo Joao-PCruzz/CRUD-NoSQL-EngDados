@@ -1,0 +1,41 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "id_turma",
+      "cod_disc",
+      "ano",
+      "semestre"
+    ],
+    "additionalProperties": false,
+    "description": "Validação da coleção turma com desnormalização da relação leciona",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "id_turma": {
+        "bsonType": "int",
+        "description": "ID único da turma - PK"
+      },
+      "cod_disc": {
+        "bsonType": "string",
+        "description": "Código da disciplina vinculada (FK)"
+      },
+      "numero": {
+        "bsonType": "int",
+        "description": "Número da turma - FK"
+      },
+      "ano": {
+        "bsonType": "int",
+        "description": "Ano da turma - FK"
+      },
+      "semestre": {
+        "enum": [
+          1,
+          2
+        ],
+        "description": "Semestre da turma"
+      }
+    }
+  }
+}
