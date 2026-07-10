@@ -35,6 +35,20 @@
           2
         ],
         "description": "Semestre da turma"
+      },
+      "leciona": {
+        "bsonType": "array",
+        "required": [
+          "mat_professor"
+        ],
+        "additionalProperties": false,
+        "description": "Relação de turma com o conjunto leciona",
+        "properties": {
+          "mat_professor": {
+            "bsonType": "int",
+            "description": "matricula do professor que leciona a turma (FK)"
+          }
+        }
       }
     }
   }

@@ -88,6 +88,20 @@
           "senha": {
             "bsonType": "string",
             "description": "Senha em texto"
+          },
+          "leciona": {
+            "bsonType": "array",
+            "required": [
+              "id_turma"
+            ],
+            "additionalProperties": false,
+            "description": "Relação de professor com o conjunto leciona",
+            "properties": {
+              "id_turma": {
+                "bsonType": "int",
+                "description": "id da turma que o professor leciona (FK)"
+              }
+            }
           }
         }
       }
