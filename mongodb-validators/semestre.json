@@ -1,0 +1,35 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "ano",
+      "semestre"
+    ],
+    "additionalProperties": false,
+    "description": "Validação da coleção semestre",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "ano": {
+        "bsonType": "int",
+        "description": "Ano do calendário (Ex: 2026)"
+      },
+      "semestre": {
+        "enum": [
+          1,
+          2
+        ],
+        "description": "Período do ano (geralmente 1º ou 2º semestre)"
+      },
+      "data_inicio": {
+        "bsonType": "string",
+        "description": "Data de início em formato (DD-MM-AAAA)"
+      },
+      "data_fim": {
+        "bsonType": "string",
+        "description": "Data de fim em formato (DD-MM-AAAA)"
+      }
+    }
+  }
+}

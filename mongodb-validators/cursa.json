@@ -1,0 +1,33 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "mat_estudante",
+      "id_turma",
+      "situacao"
+    ],
+    "additionalProperties": false,
+    "description": "Validação da coleção cursa",
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "mat_estudante": {
+        "bsonType": "string",
+        "description": "Matrícula do estudante (FK)"
+      },
+      "id_turma": {
+        "bsonType": "int",
+        "description": "ID da turma (FK)"
+      },
+      "nota": {
+        "bsonType": [
+          "double",
+          "null"
+        ],
+        "minimum": 0,
+        "maximum": 10
+      }
+    }
+  }
+}
