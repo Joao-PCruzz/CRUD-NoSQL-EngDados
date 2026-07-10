@@ -133,7 +133,7 @@
               "description": "Matrícula do professor orientador"
             },
             "ano": {
-              "bsonType": "string",
+              "bsonType": "int",
               "description": "Ano de vigência do plano"
             }
           }

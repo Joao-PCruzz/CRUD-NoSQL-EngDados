@@ -12,7 +12,7 @@
         "bsonType": "objectId"
       },
       "cod_Depto": {
-        "bsonType": "int",
+        "bsonType": "string",
         "description": "ID único do departamento - PK"
       },
       "nome": {
