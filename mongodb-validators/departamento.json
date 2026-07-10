@@ -2,7 +2,7 @@
   "$jsonSchema": {
     "bsonType": "object",
     "required": [
-      "cod_Depto",
+      "cod_depto",
       "nome"
     ],
     "additionalProperties": false,
@@ -11,7 +11,7 @@
       "_id": {
         "bsonType": "objectId"
       },
-      "cod_Depto": {
+      "cod_depto": {
         "bsonType": "string",
         "description": "ID único do departamento - PK"
       },
