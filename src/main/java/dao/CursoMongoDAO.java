@@ -12,7 +12,7 @@ import com.mongodb.client.result.UpdateResult;
 import model.Curso;
 import org.bson.Document;
 import org.bson.conversions.Bson;
- 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,16 +22,16 @@ public class CursoMongoDAO extends BaseMonDao {
     // Usamos List<String> em vez de enum Java porque o PojoCodecProvider (driver >= 4.5)
     // não serializa enums automaticamente e exigiria um codec extra
     private static final List<String> GRAUS_VALIDOS  = Arrays.asList("Bacharelado", "Licenciatura Plena");
-    private static final List<String> TURNOS_VALIDOS = Arrays.asList("Matutino", "Vespertino", "Noturno");
+    private static final List<String> TURNOS_VALIDOS = Arrays.asList("Matutino", "Vespertino", "Noturno", "Turno Indefinido");
     private static final List<String> NIVEIS_VALIDOS = Arrays.asList("Graduação", "Mestrado", "Doutorado", "Lato");
     // Ponto de entrada principal para as operações CRUD
     private final MongoCollection<Curso> collection;
- 
+
     public CursoMongoDAO() {
         super();
         this.collection = database.getCollection("curso", Curso.class);
     }
- 
+
     /**
      * Validações aplicadas antes de chamar o MongoDB (o driver não expõe
      * erros de schema validator):
@@ -52,18 +52,18 @@ public class CursoMongoDAO extends BaseMonDao {
             if (e.getError().getCode() == 11000) {
                 // Código 11000 = duplicate key — violação de índice único
                 throw new MongoException(
-                    "Duplicidade: já existe um curso com o mesmo idCurso ou com a mesma combinação nome/turno/campus/nivel.", e);
+                        "Duplicidade: já existe um curso com o mesmo idCurso ou com a mesma combinação nome/turno/campus/nivel.", e);
             }
             throw e;
         }
     }
- 
+
     // ====== Métodos de Leitura (Read) ======   
     // Busca pelo idCurso (PK). Retorna null se não encontrado
     public Curso buscarPorId(int idCurso) {
         return collection.find(Filters.eq("idCurso", idCurso)).first();
     }
- 
+
     // Busca parcial pelo nome, sem diferenciar maiúsculas/minúsculas
     public List<Curso> buscarPorNome(String nome) {
         List<Curso> resultado = new ArrayList<>();
@@ -71,29 +71,29 @@ public class CursoMongoDAO extends BaseMonDao {
         try (MongoCursor<Curso> cursor = collection.find(Filters.regex("nome", nome, "i")).iterator()) {
             while (cursor.hasNext()){
                 resultado.add(cursor.next());
-            } 
+            }
         }
         return resultado;
     }
- 
+
     // Lista todos os cursos.
     public List<Curso> listarTodos() {
         List<Curso> lista = new ArrayList<>();
         try (MongoCursor<Curso> cursor = collection.find().iterator()) {
-            while (cursor.hasNext()){ 
-                lista.add(cursor.next()); 
+            while (cursor.hasNext()){
+                lista.add(cursor.next());
             }
         }
         return lista;
     }
- 
+
     // Atualiza os campos não-nulos do Curso identificado por idCurso
     // Campos null no objeto passado são ignorados (patch parcial)
     // ===== Método de Atualizar (Update) ======
     public boolean atualizar(int idCurso, Curso cursoAtualizado) {
         // Método auxiliar
         validarDominios(cursoAtualizado);
-        
+
         // Lista de Bson para poder dar update nos documentos
         List<Bson> updates = new ArrayList<>();
         if (cursoAtualizado.getNome()   != null) updates.add(Updates.set("nome",   cursoAtualizado.getNome()));
@@ -101,20 +101,20 @@ public class CursoMongoDAO extends BaseMonDao {
         if (cursoAtualizado.getTurno()  != null) updates.add(Updates.set("turno",  cursoAtualizado.getTurno()));
         if (cursoAtualizado.getCampus() != null) updates.add(Updates.set("campus", cursoAtualizado.getCampus()));
         if (cursoAtualizado.getNivel()  != null) updates.add(Updates.set("nivel",  cursoAtualizado.getNivel()));
-        
+
         // Se não foram registrados updates
         if (updates.isEmpty()) {
             System.out.println("[AVISO] Nenhum campo fornecido para atualização.");
             return false;
         }
-        
+
         // Variável para o resultado o update filtrando por idCurso e realização do updateOne, utilizado para verificação
         // Update.combine combina todos os updates passados anteriormente em uma única operação
         UpdateResult resultado = collection.updateOne(
                 Filters.eq("idCurso", idCurso),
                 Updates.combine(updates)
         );
-        
+
         // Checagem se houve documentos modificados
         boolean ok = resultado.getModifiedCount() > 0;
         System.out.println(ok
@@ -122,7 +122,7 @@ public class CursoMongoDAO extends BaseMonDao {
                 : "[AVISO] Nenhum curso encontrado com idCurso=" + idCurso + " ou sem alterações.");
         return ok;
     }
- 
+
     /**
      * Integridade referencial manual:
      * Antes de remover, percorre os estudantes que têm este idCurso no array "vinculo" e remove o campo idCurso de cada elemento correspondente,
@@ -135,20 +135,20 @@ public class CursoMongoDAO extends BaseMonDao {
             System.out.println("[AVISO] Curso idCurso=" + idCurso + " não encontrado.");
             return false;
         }
- 
+
         // Política ON DELETE SET NULL nos vínculos dos estudantes
         MongoCollection<Document> estudanteCol = database.getCollection("estudante");
-        
+
         UpdateOptions opts = new UpdateOptions()
                 .arrayFilters(List.of(Filters.eq("elem.idCurso", idCurso))); // Garante que apenas o item correto será excluido
-        
+
         // Atualização dos vinculos dos estudantes (já que mongodb não garante FK)
         estudanteCol.updateMany(
                 Filters.elemMatch("vinculo", Filters.eq("idCurso", idCurso)),
                 Updates.unset("vinculo.$[elem].idCurso"), // unset remove especificamente o campo idCurso do vínculo
                 opts
         );
-        
+
         // Operação que de fato deleta o curso
         DeleteResult resultado = collection.deleteOne(Filters.eq("idCurso", idCurso));
         // Verificação

@@ -18,10 +18,10 @@
       },
       "MC": {
         "bsonType": [
-          "double",
+          "decimal",
           "null"
         ],
-        "description": "Média do aluno, lastreado de DECIMAL(2) para double, pode iniciar nulo"
+        "description": "Média do aluno, lastreado de DECIMAL(2) para decimal128 (BigDecimal em Java), pode iniciar nulo"
       },
       "ano_ingresso": {
         "bsonType": "int",
@@ -47,8 +47,8 @@
             "description": "Nome completo do estudante - Obrigatório"
           },
           "data_nascimento": {
-            "bsonType": "string",
-            "description": "Data de nascimento em formato texto (AAAA-MM-DD)"
+            "bsonType": ["date", "null"],
+            "description": "Data de nascimento mapeada de LocalDate (Java) para BSON date (ISODate) nativamente pelo driver"
           },
           "email": {
             "bsonType": "array",
@@ -80,17 +80,16 @@
         "items": {
           "bsonType": "object",
           "required": [
-            "idCurso",
             "data_entrada"
           ],
           "additionalProperties": false,
           "properties": {
             "idCurso": {
-              "bsonType": "int",
+              "bsonType": ["int", "null"],
               "description": "ID de referência do curso, FK de curso"
             },
             "data_entrada": {
-              "bsonType": "string",
+              "bsonType": "date",
               "description": "Data de início no curso (AAAA-MM-DD)"
             },
             "status": {
@@ -104,10 +103,10 @@
             },
             "data_saida": {
               "bsonType": [
-                "string",
+                "date",
                 "null"
               ],
-              "description": "Data de conclusão/saída no curso (AAAA-MM-DD), pode ser nula"
+              "description": "Data de conclusão/saída no curso, pode ser nula"
             }
           }
         }
@@ -133,7 +132,7 @@
               "description": "Matrícula do professor orientador"
             },
             "ano": {
-              "bsonType": "string",
+              "bsonType": "int",
               "description": "Ano de vigência do plano"
             }
           }

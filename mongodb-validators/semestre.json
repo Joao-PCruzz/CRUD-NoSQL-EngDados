@@ -23,11 +23,11 @@
         "description": "Período do ano (geralmente 1º ou 2º semestre)"
       },
       "data_inicio": {
-        "bsonType": "string",
+        "bsonType": "date",
         "description": "Data de início em formato (DD-MM-AAAA)"
       },
       "data_fim": {
-        "bsonType": "string",
+        "bsonType": "date",
         "description": "Data de fim em formato (DD-MM-AAAA)"
       }
     }

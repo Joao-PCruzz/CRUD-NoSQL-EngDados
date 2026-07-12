@@ -19,7 +19,7 @@ import java.util.List;
 public class EstudanteMongoDAO extends BaseMonDao {
     //ATTRIBUTES
     private final MongoCollection<Estudante> collection;
-    private static final List<String> STATUS_VALIDOS = Arrays.asList("Ativo", "Trancado", "Formado", "Cancelado");
+    private static final List<String> STATUS_VALIDOS = Arrays.asList("Ativo", "Graduado", "Formado", "Cancelado");
 
     //CONSTRUCTOR
     public EstudanteMongoDAO() {
@@ -98,6 +98,14 @@ public class EstudanteMongoDAO extends BaseMonDao {
     public boolean deletar(String matricula) {
         DeleteResult resultado = collection.deleteOne(Filters.eq("mat_estudante", matricula));
         return resultado.getDeletedCount() > 0;
+    }
+
+    public boolean removerVinculo(String matricula, int idCurso) {
+        UpdateResult resultado = collection.updateOne(
+                Filters.eq("mat_estudante", matricula),
+                Updates.pull("vinculo", Filters.eq("idCurso", idCurso))
+        );
+        return resultado.getModifiedCount() > 0;
     }
 
     //Método auxiliar

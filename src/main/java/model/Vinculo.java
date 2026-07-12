@@ -4,22 +4,18 @@ import java.time.LocalDate;
 
 
 public class Vinculo {
-    
-    private Integer idVinculo;
+
+    private Integer idCurso;
     private LocalDate data_entrada;
     private String status; //Faz parte do domínio "status_estudante"
     private LocalDate data_saida;
-    private Estudante estudante;
-    private Curso curso;
 
     // Construtores
     public Vinculo() {
     }
 
-    public Vinculo(Integer idVinculo, Estudante estudante, Curso curso, LocalDate data_entrada, String status, LocalDate data_saida) {
-        this.idVinculo = idVinculo;
-        this.estudante = estudante;
-        this.curso = curso;
+    public Vinculo(Integer idCurso, LocalDate data_entrada, String status, LocalDate data_saida) {
+        this.idCurso = idCurso;
         this.data_entrada = data_entrada;
         this.status = status;
         this.data_saida = data_saida;
@@ -27,28 +23,12 @@ public class Vinculo {
 
     // Metodo Getters and Setters
 
-    public Integer getIdVinculo() {
-        return idVinculo;
+    public Integer getIdCurso() {
+        return idCurso;
     }
 
-    public void setIdVinculo(Integer idVinculo) {
-        this.idVinculo = idVinculo;
-    }
-
-    public Estudante getEstudante() {
-        return estudante;
-    }
-
-    public void setEstudante(Estudante estudante) {
-        this.estudante = estudante;
-    }
-
-    public Curso getCurso() {
-        return curso;
-    }
-
-    public void setCurso(Curso curso) {
-        this.curso = curso;
+    public void setIdCurso(Integer idCurso) {
+        this.idCurso = idCurso;
     }
 
     public LocalDate getData_entrada() {
@@ -75,12 +55,10 @@ public class Vinculo {
         this.data_saida = data_saida;
     }
 
-   @Override
+    @Override
     public String toString() {
         return "Vinculo{" +
-                "idVinculo=" + idVinculo +
-                ", mat_estudante='" + (estudante != null ? estudante.getMat_estudante() : "null") + '\'' +
-                ", id_curso=" + (curso != null ? curso.getIdCurso() : "null") +
+                "idCurso=" + idCurso +
                 ", data_entrada=" + data_entrada +
                 ", status='" + status + '\'' +
                 ", data_saida=" + data_saida +
