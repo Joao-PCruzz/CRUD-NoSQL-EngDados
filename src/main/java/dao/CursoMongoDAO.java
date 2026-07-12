@@ -22,7 +22,7 @@ public class CursoMongoDAO extends BaseMonDao {
     // Usamos List<String> em vez de enum Java porque o PojoCodecProvider (driver >= 4.5)
     // não serializa enums automaticamente e exigiria um codec extra
     private static final List<String> GRAUS_VALIDOS  = Arrays.asList("Bacharelado", "Licenciatura Plena");
-    private static final List<String> TURNOS_VALIDOS = Arrays.asList("Matutino", "Vespertino", "Noturno");
+    private static final List<String> TURNOS_VALIDOS = Arrays.asList("Matutino", "Vespertino", "Noturno", "Turno Indefinido");
     private static final List<String> NIVEIS_VALIDOS = Arrays.asList("Graduação", "Mestrado", "Doutorado", "Lato");
     // Ponto de entrada principal para as operações CRUD
     private final MongoCollection<Curso> collection;

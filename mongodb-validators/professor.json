@@ -29,7 +29,7 @@
         "description": "Tipo de formação do professor"
       },
       "data_admissao": {
-        "bsonType": "string",
+        "bsonType": "date",
         "description": "Data em que o professor foi contratado, em formato (DD-MM-AAAA)"
       },
       "tipo_jornada_trabalho": {
@@ -64,7 +64,7 @@
             "description": "Nome completo do estudante - Obrigatório"
           },
           "data_nascimento": {
-            "bsonType": "string",
+            "bsonType": ["date", "null"],
             "description": "Data de nascimento em formato texto (AAAA-MM-DD)"
           },
           "email": {
