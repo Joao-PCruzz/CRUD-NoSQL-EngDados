@@ -23,11 +23,11 @@ public class Vinculo {
 
     // Metodo Getters and Setters
 
-    public Integer getidCurso() {
+    public Integer getIdCurso() {
         return idCurso;
     }
 
-    public void setidCurso(Integer idCurso) {
+    public void setIdCurso(Integer idCurso) {
         this.idCurso = idCurso;
     }
 

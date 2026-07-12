@@ -89,8 +89,8 @@ public class Main {
 
     private static void cadastrarCurso() {
         System.out.println("--- Cadastrar curso ---");
-        int idCurso = lerInteiro("idCurso (número): ");
-        String nome = lerTexto("Nome: ");
+        int idCurso = lerInteiroObrigatorio("idCurso (número): ");
+        String nome = lerTextoObrigatorio("Nome: ");
         System.out.println("Graus aceitos: Bacharelado, Licenciatura Plena");
         String grau = lerTexto("Grau: ");
         System.out.println("Turnos aceitos: Matutino, Vespertino, Noturno, Turno Indefinido");
@@ -162,18 +162,18 @@ public class Main {
 
     private static void cadastrarEstudante() {
         System.out.println("--- Cadastrar estudante ---");
-        String matricula = lerTexto("Matrícula (mat_estudante): ");
+        String matricula = lerTextoObrigatorio("Matrícula (mat_estudante): ");
         BigDecimal mc = lerBigDecimalOpcional("MC (média, pode deixar em branco): ");
         Integer anoIngresso = lerInteiroOpcional("Ano de ingresso: ");
 
         System.out.println("-- Dados do usuário --");
-        Long cpf = lerLongOpcional("CPF (somente números): ");
-        String nome = lerTexto("Nome completo: ");
+        Long cpf = lerLongObrigatorio("CPF (somente números): ");
+        String nome = lerTextoObrigatorio("Nome completo: ");
         LocalDate dataNascimento = lerDataOpcional("Data de nascimento (AAAA-MM-DD, opcional): ");
         List<String> emails = lerListaOpcional("E-mails (separados por vírgula, opcional): ");
         List<String> telefones = lerListaOpcional("Telefones (separados por vírgula, opcional): ");
-        String login = lerTexto("Login: ");
-        String senha = lerTexto("Senha: ");
+        String login = lerTextoObrigatorio("Login: ");
+        String senha = lerTextoObrigatorio("Senha: ");
 
         Usuario usuario = new Usuario(cpf != null ? cpf : 0L, nome, dataNascimento, emails, telefones, login, senha);
 
@@ -233,13 +233,15 @@ public class Main {
     private static void adicionarVinculo() {
         String matricula = lerTexto("Matrícula do estudante: ");
         Vinculo vinculo = lerVinculo();
-        estudanteDAO.adicionarVinculo(matricula, vinculo);
+        boolean ok = estudanteDAO.adicionarVinculo(matricula, vinculo);
+        System.out.println(ok ? "[OK] Vínculo adicionado." : "[AVISO] Nenhum estudante encontrado com essa matrícula, nada foi alterado.");
     }
 
     private static void removerVinculo() {
         String matricula = lerTexto("Matrícula do estudante: ");
         int idCurso = lerInteiro("idCurso do vínculo a remover: ");
-        estudanteDAO.removerVinculo(matricula, idCurso);
+        boolean ok = estudanteDAO.removerVinculo(matricula, idCurso);
+        System.out.println(ok ? "[OK] Vínculo removido." : "[AVISO] Nenhum estudante encontrado com essa matrícula, nada foi alterado.");
     }
 
     private static void deletarEstudante() {
@@ -252,12 +254,12 @@ public class Main {
     }
 
     private static Vinculo lerVinculo() {
-        System.out.println("Status aceitos: Ativo, Cancelada, Formando, Graduado");
         Integer idCurso = lerInteiroOpcional("idCurso: ");
         LocalDate dataEntrada = lerDataObrigatoria("Data de entrada (AAAA-MM-DD): ");
+        System.out.println("Status aceitos: Ativo, Cancelada, Formando, Graduado");
         String status = lerTextoOpcional("Status (opcional): ");
         LocalDate dataSaida = lerDataOpcional("Data de saída (AAAA-MM-DD, opcional): ");
-        return new Vinculo(idCurso, dataEntrada, status.isEmpty() ? null : status, dataSaida);
+        return new Vinculo(idCurso, dataEntrada, status, dataSaida);
     }
 
     // ===================== HELPERS DE LEITURA =====================
@@ -270,7 +272,16 @@ public class Main {
     private static String lerTextoOpcional(String prompt) {
         System.out.print(prompt);
         String linha = sc.nextLine().trim();
-        return linha; // vazio == "não alterar" (tratado no DAO, que ignora campos vazios/nulos)
+        return linha.isEmpty() ? null : linha;
+    }
+
+    private static String lerTextoObrigatorio(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String linha = sc.nextLine().trim();
+            if (!linha.isEmpty()) return linha;
+            System.out.println("Este campo é obrigatório, não pode ficar em branco.");
+        }
     }
 
     private static int lerInteiro(String prompt) {
@@ -297,6 +308,18 @@ public class Main {
         }
     }
 
+    private static Integer lerInteiroObrigatorio(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String linha = sc.nextLine().trim();
+            try {
+                return Integer.parseInt(linha);
+            } catch (NumberFormatException e) {
+                System.out.println("Digite um idCurso válido (somente números).");
+            }
+        }
+    }
+
     private static Long lerLongOpcional(String prompt) {
         System.out.print(prompt);
         String linha = sc.nextLine().trim();
@@ -306,6 +329,18 @@ public class Main {
         } catch (NumberFormatException e) {
             System.out.println("Valor inválido, ignorando campo.");
             return null;
+        }
+    }
+
+    private static long lerLongObrigatorio(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String linha = sc.nextLine().trim();
+            try {
+                return Long.parseLong(linha);
+            } catch (NumberFormatException e) {
+                System.out.println("Digite um CPF válido (somente números).");
+            }
         }
     }
 
