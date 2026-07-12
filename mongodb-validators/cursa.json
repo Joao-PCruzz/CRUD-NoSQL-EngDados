@@ -3,8 +3,7 @@
     "bsonType": "object",
     "required": [
       "mat_estudante",
-      "id_turma",
-      "situacao"
+      "id_turma"
     ],
     "additionalProperties": false,
     "description": "Validação da coleção cursa",

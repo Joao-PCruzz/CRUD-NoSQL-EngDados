@@ -32,8 +32,8 @@
         "bsonType": "string",
         "description": "Pré-requisito da disciplina (FK)"
       },
-      "depto_responsave": {
-        "bsonType": "int",
+      "depto_responsavel": {
+        "bsonType": "string",
         "description": "ID de referência do departamento (FK)"
       }
     }

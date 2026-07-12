@@ -32,9 +32,10 @@
         "enum": [
           "Matutino",
           "Vespertino",
-          "Noturno"
+          "Noturno",
+          "Turno Indefinido"
         ],
-        "description": "turno é obrigatório, único em conjunto e só aceita os valores: Matutino, Vespertino ou Noturno"
+        "description": "turno é obrigatório, único em conjunto e só aceita os valores: Matutino, Vespertino, Noturno ou Turno Indefinido"
       },
       "campus": {
         "bsonType": "string",

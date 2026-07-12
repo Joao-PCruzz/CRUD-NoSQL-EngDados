@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 
 public class Vinculo {
-
     private Integer idCurso;
     private LocalDate data_entrada;
     private String status; //Faz parte do domínio "status_estudante"
