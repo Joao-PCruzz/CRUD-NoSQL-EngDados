@@ -59,6 +59,11 @@ public class EstudantesController {
     public void initialize() {
         estDao = new EstudanteMongoDAO();
 
+        btnAtualizar.setOnAction(event -> handleAtualizarEstudante());
+        btnNovo.setOnAction(event -> handleNovoEstudante());
+        btnPesquisar.setOnAction(event -> handlePesquisarEstudante());
+        btnDeletar.setOnAction(event -> handleDeletarEstudante());
+
         configurarColunas();
         carregarDadosEstudantes();
 

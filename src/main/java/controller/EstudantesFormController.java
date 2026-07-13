@@ -55,6 +55,9 @@ public class EstudantesFormController {
     public void setEstudanteParaEdicao(Estudante estudante) {
         this.estudanteEdicao = estudante;
 
+        btnSalvar.setOnAction(event -> handleSalvar());
+        btnCancelar.setOnAction(event -> handleCancelar());
+
         //Dados do estudante
         txtMatricula.setText(estudante.getMat_estudante());
         txtMatricula.setDisable(true);
