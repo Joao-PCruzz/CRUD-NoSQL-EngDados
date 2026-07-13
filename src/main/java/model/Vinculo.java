@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 
 public class Vinculo {
-    
     private Integer idCurso;
     private LocalDate data_entrada;
     private String status; //Faz parte do domínio "status_estudante"
@@ -55,7 +54,7 @@ public class Vinculo {
         this.data_saida = data_saida;
     }
 
-   @Override
+    @Override
     public String toString() {
         return "Vinculo{" +
                 "idCurso=" + idCurso +

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CursosController">
+    <children>
+        <VBox spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+            <children>
+
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Gestão de Cursos" textFill="#014da3">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Gerenciamento do Catálogo Académico NoSQL" textFill="#7f8c8d" />
+                            </children>
+                        </VBox>
+                        <Button fx:id="btnNovo" mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="[+] Adicionar Curso" />
+                        <Button fx:id="btnAtualizar" mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="Atualizar Curso" />
+                        <Button fx:id="btnDeletar" mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="Deletar Curso" />
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <TextField fx:id="txtBusca" promptText="Pesquisar Curso (Nome ou Código)..." HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnPesquisar" mnemonicParsing="false" prefWidth="100.0" text="Pesquisar" />
+                    </children>
+                </HBox>
+
+                <HBox prefHeight="250.0" spacing="15.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <TableView fx:id="tabelaCursos" HBox.hgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colIdCurso" style="-fx-alignment: CENTER;" text="Id Curso" />
+                                <TableColumn fx:id="colNomeCurso" style="-fx-alignment: CENTER-LEFT;" text="Nome do Curso" />
+                                <TableColumn fx:id="colGrau" style="-fx-alignment: CENTER;" text="Grau" />
+                                <TableColumn fx:id="colTurno" style="-fx-alignment: CENTER;" text="Turno" />
+                                <TableColumn fx:id="colCampus" style="-fx-alignment: CENTER;" text="Campus" />
+                                <TableColumn fx:id="colNivel" style="-fx-alignment: CENTER;" text="Nível" />
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                        </TableView>
+                    </children>
+                </HBox>
+
+                <TabPane prefHeight="220.0" style="-fx-border-color: #f39c12; -fx-border-width: 1.5; -fx-background-radius: 4; -fx-border-radius: 4;" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab text="Estudantes Matriculados">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0">
+                                    <children>
+                                        <TableView fx:id="tabelaEstudantesCurso" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                            <columns>
+                                                <TableColumn fx:id="colMatriculaEstudante" style="-fx-alignment: CENTER;" text="Matrícula" />
+                                                <TableColumn fx:id="colNomeEstudante" style="-fx-alignment: CENTER-LEFT;" text="Nome do Aluno" />
+                                                <TableColumn fx:id="colStatusEstudante" style="-fx-alignment: CENTER;" text="Status no Curso" />
+                                            </columns>
+                                            <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                            </columnResizePolicy>
+                                        </TableView>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

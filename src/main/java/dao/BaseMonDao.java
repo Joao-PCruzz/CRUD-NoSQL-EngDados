@@ -44,4 +44,16 @@ public class BaseMonDao {
         // Define o nome do banco de dados que você vai usar
         this.database = mongoClient.getDatabase("universidade");
     }
+
+    public static void fecharConexao() {
+        if (mongoClient != null) {
+            try {
+                mongoClient.close();
+                mongoClient = null;
+                System.out.println("Conexão com o MongoDB encerrada com sucesso.");
+            } catch (Exception e) {
+                System.err.println("Erro ao fechar a conexão com o MongoDB: " + e.getMessage());
+            }
+        }
+    }
 }

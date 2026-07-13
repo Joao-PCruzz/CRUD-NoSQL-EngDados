@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="550.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EstudantesFormController">
+    <children>
+        <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+            <children>
+
+                <VBox spacing="2.0">
+                    <children>
+                        <Label text="Cadastro de Estudante" textFill="#014da3">
+                            <font>
+                                <Font name="System Bold" size="20.0" />
+                            </font>
+                        </Label>
+                        <Label text="Insira as informações do aluno e as credenciais de usuário NoSQL" textFill="#7f8c8d" />
+                    </children>
+                </VBox>
+
+                <Separator prefWidth="200.0" />
+
+                <Label text="Dados Acadêmicos" textFill="#014da3">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+
+                <GridPane hgap="15.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="512.0" vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="189.0" minWidth="10.0" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="264.0" minWidth="10.0" prefWidth="160.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.0" minWidth="10.0" prefWidth="212.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="120.0">
+                            <children>
+                                <Label text="Matrícula: *" />
+                                <TextField fx:id="txtMatricula" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="110.0" promptText="Ex: 2026000123" />
+                            </children>
+                        </VBox>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="42.0" prefWidth="160.0" GridPane.columnIndex="1">
+                            <children>
+                                <Label text="Ano de Ingresso: *" />
+                                <TextField fx:id="txtAnoIngresso" prefHeight="25.0" prefWidth="140.0" promptText="Ex: 2026" />
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
+                            <children>
+                                <Label text="MC: " />
+                                <TextField fx:id="txtMc" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="154.0" promptText="0-10" />
+                            </children>
+                        </VBox>
+                    </children>
+                </GridPane>
+
+                <Separator prefWidth="200.0" />
+
+                <Label text="Informações de Usuário (Documento Embutido)" textFill="#014da3">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+
+                <GridPane hgap="15.0" vgap="10.0" VBox.vgrow="ALWAYS">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2">
+                            <children>
+                                <Label text="Nome Completo: *" />
+                                <TextField fx:id="txtNome" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="255.0" promptText="Nome do estudante" />
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                            <children>
+                                <Label text="CPF: (Apenas números) *" />
+                                <TextField fx:id="txtCpf" promptText="Ex: 12345678900" />
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <children>
+                                <Label text="Login de Acesso: *" />
+                                <TextField fx:id="txtLogin" promptText="Ex: joao.silva" />
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+                            <children>
+                                <Label text="E-mails: (Separados por vírgula)" />
+                                <TextField fx:id="txtEmail" promptText="email1@ufs.br, email2@gmail.com" />
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <children>
+                                <Label text="Telefones: (Separados por vírgula)" />
+                                <TextField fx:id="txtTelefone" promptText="79999999999, 7932123456" />
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                            <children>
+                                <Label text="Data de Nascimento:" />
+                                <DatePicker fx:id="dataNascimento" prefHeight="25.0" prefWidth="250.0" promptText="Ex: 01/01/2000" />
+                            </children>
+                        </VBox>
+                    </children>
+                </GridPane>
+
+                <Separator prefWidth="200.0" />
+
+                <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                    <children>
+                        <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#handleCancelar" prefWidth="100.0" style="-fx-background-color: #bdc3c7; -fx-text-fill: #2c3e50; -fx-font-weight: bold;" text="Cancelar" />
+                        <Button fx:id="btnSalvar" mnemonicParsing="false" onAction="#handleSalvar" prefWidth="120.0" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="Salvar" />
+                    </children>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </HBox>
+
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

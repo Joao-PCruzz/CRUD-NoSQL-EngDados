@@ -14,8 +14,17 @@ public class Usuario {
     private String senha;
 
     // Construtores (talvez seja necessária e criação de mais)
-    public Usuario(){
+    public Usuario() {
 
+    }
+
+    public Usuario(long cpf, String nome, LocalDate data_nascimento, List<String> email, List<String> telefone, String login) {
+        this.cpf = cpf;
+        this.nome = nome;
+        this.data_nascimento = data_nascimento;
+        this.email = email;
+        this.telefone = telefone;
+        this.login = login;
     }
 
     public Usuario(long cpf, String nome, LocalDate data_nascimento, List<String> email, List<String> telefone, String login, String senha) {
@@ -84,6 +93,16 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getEmailsFormatados() {
+        if (this.email == null || this.email.isEmpty()) return "";
+        return String.join(", ", this.email);
+    }
+
+    public String getTelefonesFormatados() {
+        if (this.telefone == null || this.telefone.isEmpty()) return "";
+        return String.join(", ", this.telefone);
     }
 
    @Override

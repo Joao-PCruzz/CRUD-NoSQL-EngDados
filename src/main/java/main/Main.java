@@ -1,3 +1,5 @@
+package main;
+
 import dao.CursoMongoDAO;
 import dao.EstudanteMongoDAO;
 import model.Curso;
