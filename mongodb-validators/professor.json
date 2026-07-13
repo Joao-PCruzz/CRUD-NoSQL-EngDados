@@ -30,7 +30,7 @@
       },
       "data_admissao": {
         "bsonType": "date",
-        "description": "Data em que o professor foi contratado, em formato (DD-MM-AAAA)"
+        "description": "Data em que o professor foi contratado"
       },
       "tipo_jornada_trabalho": {
         "enum": [
@@ -57,28 +57,24 @@
         "properties": {
           "cpf": {
             "bsonType": "long",
-            "description": "CPF do estudante mapeado de NUMERIC(13) para o tipo long"
+            "description": "CPF do professor mapeado de NUMERIC(13) para o tipo long"
           },
           "nome": {
             "bsonType": "string",
-            "description": "Nome completo do estudante - Obrigatório"
+            "description": "Nome completo do professor - Obrigatório"
           },
           "data_nascimento": {
             "bsonType": ["date", "null"],
-            "description": "Data de nascimento em formato texto (AAAA-MM-DD)"
+            "description": "Data de nascimento"
           },
           "email": {
             "bsonType": "array",
-            "items": {
-              "bsonType": "string"
-            },
+            "items": { "bsonType": "string" },
             "description": "Lista (array) de e-mails do usuário"
           },
           "telefone": {
             "bsonType": "array",
-            "items": {
-              "bsonType": "string"
-            },
+            "items": { "bsonType": "string" },
             "description": "Lista (array) de telefones do usuário"
           },
           "login": {
@@ -88,19 +84,20 @@
           "senha": {
             "bsonType": "string",
             "description": "Senha em texto"
-          },
-          "leciona": {
-            "bsonType": "array",
-            "required": [
-              "id_turma"
-            ],
-            "additionalProperties": false,
-            "description": "Relação de professor com o conjunto leciona",
-            "properties": {
-              "id_turma": {
-                "bsonType": "int",
-                "description": "id da turma que o professor leciona (FK)"
-              }
+          }
+        }
+      },
+      "leciona": {
+        "bsonType": "array",
+        "description": "Relação de professor com o conjunto leciona (turmas ministradas)",
+        "items": {
+          "bsonType": "object",
+          "required": ["id_turma"],
+          "additionalProperties": false,
+          "properties": {
+            "id_turma": {
+              "bsonType": "int",
+              "description": "id da turma que o professor leciona (FK)"
             }
           }
         }
