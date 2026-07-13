@@ -10,11 +10,17 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 
 import model.Curso;
+import model.Estudante;
+import model.Usuario;
+import model.Vinculo;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.math.BigDecimal;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class CursoMongoDAO extends BaseMonDao {
@@ -26,10 +32,12 @@ public class CursoMongoDAO extends BaseMonDao {
     private static final List<String> NIVEIS_VALIDOS = Arrays.asList("Graduação", "Mestrado", "Doutorado", "Lato");
     // Ponto de entrada principal para as operações CRUD
     private final MongoCollection<Curso> collection;
+    private final MongoCollection<Document> estudanteCollection;
 
     public CursoMongoDAO() {
         super();
         this.collection = database.getCollection("curso", Curso.class);
+        this.estudanteCollection = database.getCollection("estudante");
     }
 
     /**
@@ -169,5 +177,94 @@ public class CursoMongoDAO extends BaseMonDao {
             throw new IllegalArgumentException("Turno inválido: '" + curso.getTurno() + "'. Valores aceitos: " + TURNOS_VALIDOS);
         if (curso.getNivel() != null && !NIVEIS_VALIDOS.contains(curso.getNivel()))
             throw new IllegalArgumentException("Nível inválido: '" + curso.getNivel() + "'. Valores aceitos: " + NIVEIS_VALIDOS);
+    }
+
+    public List<Estudante> buscarEstudantesPorCurso(Integer idCurso) {
+        List<Estudante> estudantesMatriculados = new ArrayList<>();
+
+        if (estudanteCollection == null || idCurso == null) {
+            return estudantesMatriculados;
+        }
+
+        try {
+            // NOTA: Ajuste "vinculos.codigo_curso" para o nome exato da chave gerada no JSON do seu MongoDB para o model Vinculo.
+            var filtro = Filters.eq("vinculo.idCurso", idCurso);
+
+            // Executa a busca e itera sobre os documentos encontrados
+            for (Document doc : estudanteCollection.find(filtro)) {
+
+                // Converte o Document do MongoDB de volta para o seu objeto Java (Model Estudante)
+                Estudante estudante = converterDocumentParaEstudante(doc);
+
+                if (estudante != null) {
+                    estudantesMatriculados.add(estudante);
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Erro ao buscar estudantes vinculados ao curso: " + idCurso);
+            e.printStackTrace();
+        }
+        return estudantesMatriculados;
+    }
+
+    private Estudante converterDocumentParaEstudante(Document doc) {
+        if (doc == null) return null;
+
+        try {
+            Estudante est = new Estudante();
+            est.setMat_estudante(doc.getString("mat_estudante"));
+
+            // Tratamento do campo MC guardado como Decimal128 / BigDecimal
+            if (doc.get("mc") != null) {
+                est.setMc(BigDecimal.valueOf(doc.getInteger("mc")));
+            }
+            est.setAno_ingresso(doc.getInteger("ano_ingresso"));
+
+            // Converte o Usuário Embutido
+            Document docUser = (Document) doc.get("usuario");
+            if (docUser != null) {
+                Usuario user = new Usuario();
+                user.setCpf(docUser.getLong("cpf"));
+                user.setNome(docUser.getString("nome"));
+                user.setLogin(docUser.getString("login"));
+
+                // Conversão de java.util.Date do Mongo para java.time.LocalDate
+                Date dataNasc = docUser.getDate("data_nascimento");
+                if (dataNasc != null) {
+                    user.setData_nascimento(dataNasc.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                }
+
+                user.setEmail((List<String>) docUser.get("email"));
+                user.setTelefone((List<String>) docUser.get("telefone"));
+                est.setUsuario(user);
+            }
+
+            // Converte a lista de Vínculos Embutidos
+            List<Document> docVinculos = (List<Document>) doc.get("vinculo");
+            List<Vinculo> vinculos = new ArrayList<>();
+            if (docVinculos != null) {
+                for (Document vDoc : docVinculos) {
+                    Vinculo v = new Vinculo();
+                    v.setIdCurso(vDoc.getInteger("idCurso"));
+                    v.setStatus(vDoc.getString("status"));
+
+                    Date entrada = vDoc.getDate("data_entrada");
+                    if (entrada != null) v.setData_entrada(entrada.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+                    Date saida = vDoc.getDate("data_saida");
+                    if (saida != null) v.setData_saida(saida.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+                    vinculos.add(v);
+                }
+            }
+            est.setVinculo(vinculos);
+
+            return est;
+        } catch (Exception e) {
+            System.err.println("Erro ao mapear documento para Estudante.");
+            e.printStackTrace();
+            return null;
+        }
     }
 }
