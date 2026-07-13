@@ -1,6 +1,7 @@
 package controller;
 
 import dao.EstudanteMongoDAO;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -102,32 +103,51 @@ public class EstudantesFormController {
             List<String> listaEmails = converterStringParaLista(txtEmail.getText());
             List<String> listaTelefones = converterStringParaLista(txtTelefone.getText());
 
-            if (estudanteEdicao == null) {
-                //NOVO ESTUDANTE
-                Usuario novoUsuario = new Usuario(cpf, nome, dataNasc, listaEmails, listaTelefones, login);
-                Estudante novoEstudante = new Estudante(matricula, BigDecimal.valueOf(mc), anoIngresso, novoUsuario, new ArrayList<>());
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() {
+                    if (estudanteEdicao == null) {
+                        //NOVO ESTUDANTE
+                        Usuario novoUsuario = new Usuario(cpf, nome, dataNasc, listaEmails, listaTelefones, login);
+                        Estudante novoEstudante = new Estudante(matricula, BigDecimal.valueOf(mc), anoIngresso, novoUsuario, new ArrayList<>());
+                        estDao.inserir(novoEstudante);
+                    } else {
+                        //ATUALIZAR ESTUDANTE
+                        estudanteEdicao.setAno_ingresso(anoIngresso);
+                        estudanteEdicao.setMc(BigDecimal.valueOf(mc));
 
-                estDao.inserir(novoEstudante);
-            } else {
-                //ATUALIZAR ESTUDANTE
-                estudanteEdicao.setAno_ingresso(anoIngresso);
-                estudanteEdicao.setMc(BigDecimal.valueOf(mc));
+                        Usuario usr = estudanteEdicao.getUsuario();
+                        if (usr == null) {
+                            usr = new Usuario();
+                            estudanteEdicao.setUsuario(usr);
+                        }
+                        usr.setNome(nome);
+                        usr.setLogin(login);
+                        usr.setData_nascimento(dataNasc);
+                        usr.setEmail(listaEmails);
+                        usr.setTelefone(listaTelefones);
 
-                Usuario usr = estudanteEdicao.getUsuario();
-                if (usr == null) {
-                    usr = new Usuario();
-                    estudanteEdicao.setUsuario(usr);
+                        estDao.atualizar(estudanteEdicao.getMat_estudante(), estudanteEdicao);
+                    }
+                    return null;
                 }
-                usr.setNome(nome);
-                usr.setLogin(login);
-                usr.setData_nascimento(dataNasc);
-                usr.setEmail(listaEmails);
-                usr.setTelefone(listaTelefones);
+            };
 
-                estDao.atualizar(estudanteEdicao.getMat_estudante(), estudanteEdicao);
-            }
+            btnSalvar.setDisable(true);
+            btnCancelar.setDisable(true);
 
-            fecharJanela();
+            task.setOnSucceeded(e -> fecharJanela());
+            task.setOnFailed(e -> {
+                btnSalvar.setDisable(false);
+                btnCancelar.setDisable(false);
+                Throwable erro = task.getException();
+                erro.printStackTrace();
+                mostrarAlerta("Erro ao Salvar", "Não foi possível salvar os dados.", erro.getMessage());
+            });
+
+            Thread thread = new Thread(task);
+            thread.setDaemon(true);
+            thread.start();
 
         } catch (NumberFormatException e) {
             mostrarAlerta("Erro de Formato", "Ano de Ingresso ou MC inválidos", "Certifique-se de usar números válidos (ex: MC usar ponto final '0.0').");

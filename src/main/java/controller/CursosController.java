@@ -4,6 +4,7 @@ import dao.CursoMongoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -107,20 +108,58 @@ public class CursosController {
     }
 
     private void carregarDadosCursos() {
-        List<Curso> lista = cursoDao.listarTodos();
-        ObservableList<Curso> obsLista = FXCollections.observableArrayList(lista);
-        tabelaCursos.setItems(obsLista);
+        Task<List<Curso>> task = new Task<>() {
+            @Override
+            protected List<Curso> call() {
+                return cursoDao.listarTodos();
+            }
+        };
+
+        task.setOnSucceeded(e -> tabelaCursos.setItems(FXCollections.observableArrayList(task.getValue())));
+        task.setOnFailed(e -> {
+            task.getException().printStackTrace();
+            exibirErro("Não foi possível carregar os cursos.", task.getException());
+        });
+
+        executarEmBackground(task);
     }
 
     private void mostrarEstudantesDoCurso(Curso curso) {
-        List<Estudante> estudantes = cursoDao.buscarEstudantesPorCurso(curso.getIdCurso());
+        Task<List<Estudante>> task = new Task<>() {
+            @Override
+            protected List<Estudante> call() {
+                return cursoDao.buscarEstudantesPorCurso(curso.getIdCurso());
+            }
+        };
 
-        if (estudantes != null && !estudantes.isEmpty()) {
-            ObservableList<Estudante> obsEstudantes = FXCollections.observableArrayList(estudantes);
-            tabelaEstudantesCurso.setItems(obsEstudantes);
-        } else {
-            tabelaEstudantesCurso.getItems().clear();
-        }
+        task.setOnSucceeded(e -> {
+            List<Estudante> estudantes = task.getValue();
+            if (estudantes != null && !estudantes.isEmpty()) {
+                tabelaEstudantesCurso.setItems(FXCollections.observableArrayList(estudantes));
+            } else {
+                tabelaEstudantesCurso.getItems().clear();
+            }
+        });
+        task.setOnFailed(e -> {
+            task.getException().printStackTrace();
+            exibirErro("Não foi possível carregar os estudantes do curso.", task.getException());
+        });
+
+        executarEmBackground(task);
+    }
+
+    private void executarEmBackground(Task<?> task) {
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private void exibirErro(String contexto, Throwable erro) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro de comunicação com o banco");
+        alert.setHeaderText(contexto);
+        alert.setContentText(erro != null ? erro.getMessage() : "Erro desconhecido.");
+        alert.showAndWait();
     }
 
     // --- Métodos de Ação ---
@@ -136,14 +175,29 @@ public class CursosController {
 
         try {
             Integer idBusca = Integer.parseInt(termoBusca.trim());
-            Curso encontrado = cursoDao.buscarPorId(idBusca);
 
-            if (encontrado != null) {
-                tabelaCursos.setItems(FXCollections.observableArrayList(encontrado));
-                tabelaCursos.getSelectionModel().select(encontrado);
-            } else {
-                exibirMensagemInformativa("Nenhum curso encontrado com o ID informado.");
-            }
+            Task<Curso> task = new Task<>() {
+                @Override
+                protected Curso call() {
+                    return cursoDao.buscarPorId(idBusca);
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                Curso encontrado = task.getValue();
+                if (encontrado != null) {
+                    tabelaCursos.setItems(FXCollections.observableArrayList(encontrado));
+                    tabelaCursos.getSelectionModel().select(encontrado);
+                } else {
+                    exibirMensagemInformativa("Nenhum curso encontrado com o ID informado.");
+                }
+            });
+            task.setOnFailed(e -> {
+                task.getException().printStackTrace();
+                exibirErro("Não foi possível pesquisar o curso.", task.getException());
+            });
+
+            executarEmBackground(task);
         } catch (NumberFormatException e) {
             exibirMensagemInformativa("Por favor, insira um ID numérico válido para a pesquisa.");
         }
@@ -175,8 +229,18 @@ public class CursosController {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                cursoDao.deletar(selecionado.getIdCurso());
-                carregarDadosCursos();
+                Task<Boolean> task = new Task<>() {
+                    @Override
+                    protected Boolean call() {
+                        return cursoDao.deletar(selecionado.getIdCurso());
+                    }
+                };
+                task.setOnSucceeded(e -> carregarDadosCursos());
+                task.setOnFailed(e -> {
+                    task.getException().printStackTrace();
+                    exibirErro("Não foi possível deletar o curso.", task.getException());
+                });
+                executarEmBackground(task);
             }
         } else {
             mostrarAlertaSelecao();

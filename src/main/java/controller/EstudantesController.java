@@ -3,6 +3,7 @@ package controller;
 import dao.EstudanteMongoDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -101,9 +102,34 @@ public class EstudantesController {
     }
 
     private void carregarDadosEstudantes() {
-        List<Estudante> lista = estDao.listarTodos();
-        ObservableList<Estudante> obsLista = FXCollections.observableArrayList(lista);
-        tabelaEstudantes.setItems(obsLista);
+        Task<List<Estudante>> task = new Task<>() {
+            @Override
+            protected List<Estudante> call() {
+                return estDao.listarTodos();
+            }
+        };
+
+        task.setOnSucceeded(e -> tabelaEstudantes.setItems(FXCollections.observableArrayList(task.getValue())));
+        task.setOnFailed(e -> {
+            task.getException().printStackTrace();
+            exibirErro("Não foi possível carregar os estudantes.", task.getException());
+        });
+
+        executarEmBackground(task);
+    }
+
+    private void executarEmBackground(Task<?> task) {
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private void exibirErro(String contexto, Throwable erro) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erro de comunicação com o banco");
+        alert.setHeaderText(contexto);
+        alert.setContentText(erro != null ? erro.getMessage() : "Erro desconhecido.");
+        alert.showAndWait();
     }
 
     private void mostrarDetalhesEstudante(Estudante estudante) {
@@ -135,18 +161,33 @@ public class EstudantesController {
             return;
         }
 
-        Estudante encontrado = estDao.buscarPorMatricula(termoBusca.trim());
+        String matricula = termoBusca.trim();
+        Task<Estudante> task = new Task<>() {
+            @Override
+            protected Estudante call() {
+                return estDao.buscarPorMatricula(matricula);
+            }
+        };
 
-        if (encontrado != null) {
-            tabelaEstudantes.setItems(FXCollections.observableArrayList(encontrado));
-            tabelaEstudantes.getSelectionModel().select(encontrado);
-        } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Busca");
-            alert.setHeaderText(null);
-            alert.setContentText("Nenhum estudante encontrado com a matrícula informada.");
-            alert.showAndWait();
-        }
+        task.setOnSucceeded(e -> {
+            Estudante encontrado = task.getValue();
+            if (encontrado != null) {
+                tabelaEstudantes.setItems(FXCollections.observableArrayList(encontrado));
+                tabelaEstudantes.getSelectionModel().select(encontrado);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Busca");
+                alert.setHeaderText(null);
+                alert.setContentText("Nenhum estudante encontrado com a matrícula informada.");
+                alert.showAndWait();
+            }
+        });
+        task.setOnFailed(e -> {
+            task.getException().printStackTrace();
+            exibirErro("Não foi possível pesquisar o estudante.", task.getException());
+        });
+
+        executarEmBackground(task);
     }
 
     @FXML
@@ -175,8 +216,18 @@ public class EstudantesController {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                estDao.deletar(selecionado.getMat_estudante());
-                carregarDadosEstudantes();
+                Task<Boolean> task = new Task<>() {
+                    @Override
+                    protected Boolean call() {
+                        return estDao.deletar(selecionado.getMat_estudante());
+                    }
+                };
+                task.setOnSucceeded(e -> carregarDadosEstudantes());
+                task.setOnFailed(e -> {
+                    task.getException().printStackTrace();
+                    exibirErro("Não foi possível deletar o estudante.", task.getException());
+                });
+                executarEmBackground(task);
             }
         } else {
             mostrarAlertaSelecao();

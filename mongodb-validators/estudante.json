@@ -31,9 +31,7 @@
         "bsonType": "object",
         "required": [
           "cpf",
-          "nome",
-          "login",
-          "senha"
+          "nome"
         ],
         "additionalProperties": false,
         "description": "Dados civis e de login incorporados da tabela relacional usuario (de forma 1:1)",
