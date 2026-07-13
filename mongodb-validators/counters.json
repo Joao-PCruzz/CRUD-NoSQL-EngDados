@@ -1,0 +1,21 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "_id",
+      "seq"
+    ],
+    "additionalProperties": false,
+    "description": "Coleção auxiliar (não faz parte do modelo relacional original) usada só para emular colunas SERIAL do SQL, já que o MongoDB não tem auto-incremento nativo. Cada documento é um contador nomeado (ex: 'curso', 'vinculo'); a aplicação incrementa 'seq' atomicamente antes de cada inserção.",
+    "properties": {
+      "_id": {
+        "bsonType": "string",
+        "description": "Nome da sequência, ex: 'curso' ou 'vinculo'"
+      },
+      "seq": {
+        "bsonType": "int",
+        "description": "Último valor gerado para essa sequência"
+      }
+    }
+  }
+}

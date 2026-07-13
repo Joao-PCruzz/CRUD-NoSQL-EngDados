@@ -71,8 +71,8 @@ public class EstudantesFormController {
             txtCpf.setDisable(true);
             txtNome.setText(estudante.getUsuario().getNome());
             txtLogin.setText(estudante.getUsuario().getLogin());
-            txtEmail.setText(estudante.getUsuario().getEmailsFormatados());
-            txtTelefone.setText(estudante.getUsuario().getTelefonesFormatados());
+            txtEmail.setText(estudante.getUsuario().emailsFormatados());
+            txtTelefone.setText(estudante.getUsuario().telefonesFormatados());
 
             if (estudante.getUsuario().getData_nascimento() != null) {
                 dataNascimento.setValue(estudante.getUsuario().getData_nascimento());

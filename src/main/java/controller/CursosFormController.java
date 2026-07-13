@@ -44,7 +44,6 @@ public class CursosFormController {
         this.cursoEdicao = curso;
 
         txtIdCurso.setText(String.valueOf(curso.getIdCurso()));
-        txtIdCurso.setDisable(true);
 
         txtNome.setText(curso.getNome());
         cbGrau.setValue(curso.getGrau());
@@ -62,22 +61,18 @@ public class CursosFormController {
         }
 
         try {
-            Integer idCurso = Integer.parseInt(txtIdCurso.getText().trim());
             String nome = txtNome.getText().trim();
             String grau = cbGrau.getValue();
             String turno = cbTurno.getValue();
             String campus = txtCampus.getText().trim();
             String nivel = cbNivel.getValue();
 
-            Task<Boolean> task = new Task<>() {
+            Task<Void> task = new Task<>() {
                 @Override
-                protected Boolean call() {
+                protected Void call() {
                     if (cursoEdicao == null) {
-                        // Cenário: NOVO CURSO
-                        if (cursoDao.buscarPorId(idCurso) != null) {
-                            return true; // ID duplicado
-                        }
-                        Curso novoCurso = new Curso(idCurso, nome, grau, turno, campus, nivel);
+                        // idCurso é gerado automaticamente dentro do DAO
+                        Curso novoCurso = new Curso(null, nome, grau, turno, campus, nivel);
                         cursoDao.inserir(novoCurso);
                     } else {
                         // Cenário: EDIÇÃO DE CURSO
@@ -89,22 +84,14 @@ public class CursosFormController {
 
                         cursoDao.atualizar(cursoEdicao.getIdCurso(), cursoEdicao);
                     }
-                    return false;
+                    return null;
                 }
             };
 
             btnSalvar.setDisable(true);
             btnCancelar.setDisable(true);
 
-            task.setOnSucceeded(e -> {
-                btnSalvar.setDisable(false);
-                btnCancelar.setDisable(false);
-                if (Boolean.TRUE.equals(task.getValue())) {
-                    mostrarAlerta("Erro de Duplicação", "ID de Curso já existente", "Já existe um curso registado com este ID. Introduza um identificador único.");
-                } else {
-                    fecharJanela();
-                }
-            });
+            task.setOnSucceeded(e -> fecharJanela());
             task.setOnFailed(e -> {
                 btnSalvar.setDisable(false);
                 btnCancelar.setDisable(false);
@@ -117,8 +104,6 @@ public class CursosFormController {
             thread.setDaemon(true);
             thread.start();
 
-        } catch (NumberFormatException e) {
-            mostrarAlerta("Erro de Formato", "ID do Curso Inválido", "O campo 'ID do Curso' deve conter apenas números inteiros.");
         } catch (Exception e) {
             mostrarAlerta("Erro ao Salvar", "Falha na persistência dos dados NoSQL", e.getMessage());
         }
@@ -135,8 +120,7 @@ public class CursosFormController {
     }
 
     private boolean validarCampos() {
-        if (txtIdCurso.getText() == null || txtIdCurso.getText().trim().isEmpty() ||
-                txtNome.getText() == null || txtNome.getText().trim().isEmpty() ||
+        if (txtNome.getText() == null || txtNome.getText().trim().isEmpty() ||
                 cbGrau.getValue() == null ||
                 cbTurno.getValue() == null ||
                 txtCampus.getText() == null || txtCampus.getText().trim().isEmpty() ||

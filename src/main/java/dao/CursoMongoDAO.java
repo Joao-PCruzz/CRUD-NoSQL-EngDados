@@ -52,6 +52,8 @@ public class CursoMongoDAO extends BaseMonDao {
     public void inserir(Curso curso) {
         // Método auxiliar para validação dos enums
         validarDominios(curso);
+        // idCurso é gerado aqui, imitando o comportamento do SERIAL no SQL
+        curso.setIdCurso(proximoValor("curso"));
         try {
             // Método para inserir um na coleção
             collection.insertOne(curso);
@@ -246,6 +248,7 @@ public class CursoMongoDAO extends BaseMonDao {
             if (docVinculos != null) {
                 for (Document vDoc : docVinculos) {
                     Vinculo v = new Vinculo();
+                    v.setIdVinculo(vDoc.getInteger("idVinculo"));
                     v.setIdCurso(vDoc.getInteger("idCurso"));
                     v.setStatus(vDoc.getString("status"));
 

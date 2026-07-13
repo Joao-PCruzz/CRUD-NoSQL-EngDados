@@ -52,8 +52,8 @@
 
                         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
                             <children>
-                                <Label text="ID do Curso: *" />
-                                <TextField fx:id="txtIdCurso" promptText="Ex: COMP-01" />
+                                <Label text="ID do Curso:" />
+                                <TextField fx:id="txtIdCurso" editable="false" promptText="Gerado automaticamente" />
                             </children>
                         </VBox>
 

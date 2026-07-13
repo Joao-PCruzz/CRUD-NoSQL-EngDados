@@ -78,10 +78,15 @@
         "items": {
           "bsonType": "object",
           "required": [
+            "idVinculo",
             "data_entrada"
           ],
           "additionalProperties": false,
           "properties": {
+            "idVinculo": {
+              "bsonType": "int",
+              "description": "PK do vínculo, equivalente ao SERIAL idVinculo do SQL"
+            },
             "idCurso": {
               "bsonType": ["int", "null"],
               "description": "ID de referência do curso, FK de curso"

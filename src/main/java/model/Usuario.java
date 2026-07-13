@@ -95,12 +95,12 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public String getEmailsFormatados() {
+    public String emailsFormatados() {
         if (this.email == null || this.email.isEmpty()) return "";
         return String.join(", ", this.email);
     }
 
-    public String getTelefonesFormatados() {
+    public String telefonesFormatados() {
         if (this.telefone == null || this.telefone.isEmpty()) return "";
         return String.join(", ", this.telefone);
     }

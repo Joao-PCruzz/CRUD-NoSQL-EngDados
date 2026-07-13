@@ -4,8 +4,13 @@ import com.mongodb.ConnectionString; //Imports principais do mongoDB driver para
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.FindOneAndUpdateOptions;
+import com.mongodb.client.model.ReturnDocument;
+import com.mongodb.client.model.Updates;
 
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry; //Imports auxiliares para trabalhar com os POJO's e etc
 import org.bson.codecs.pojo.PojoCodecProvider;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -43,6 +48,25 @@ public class BaseMonDao {
         
         // Define o nome do banco de dados que você vai usar
         this.database = mongoClient.getDatabase("universidade");
+    }
+
+    /*
+     * Gera o próximo valor de uma sequência numérica, emulando o comportamento
+     * do SERIAL do PostgreSQL (idCurso, idVinculo, etc.), já que o MongoDB não
+     * possui um tipo auto-incremento nativo.
+    */
+    protected int proximoValor(String nomeSequencia) {
+        MongoCollection<Document> counters = database.getCollection("counters");
+
+        Document resultado = counters.findOneAndUpdate(
+                new Document("_id", nomeSequencia),
+                Updates.inc("seq", 1),
+                new FindOneAndUpdateOptions()
+                        .upsert(true)
+                        .returnDocument(ReturnDocument.AFTER)
+        );
+
+        return resultado.getInteger("seq");
     }
 
     public static void fecharConexao() {

@@ -19,7 +19,8 @@ import java.util.List;
 public class EstudanteMongoDAO extends BaseMonDao {
     //ATTRIBUTES
     private final MongoCollection<Estudante> collection;
-    private static final List<String> STATUS_VALIDOS = Arrays.asList("Ativo", "Graduado", "Formado", "Cancelado");
+    // Precisa espelhar EXATAMENTE o enum "status" do validator de estudante.json (vinculo.status)
+    private static final List<String> STATUS_VALIDOS = Arrays.asList("Ativo", "Cancelada", "Formando", "Graduado");
 
     //CONSTRUCTOR
     public EstudanteMongoDAO() {
@@ -87,6 +88,9 @@ public class EstudanteMongoDAO extends BaseMonDao {
             throw new IllegalArgumentException("Status de vínculo inválido: " + novoVinculo.getStatus());
         }
 
+        // idVinculo é gerado aqui, imitando o SERIAL do SQL: nunca é informado pelo formulário.
+        novoVinculo.setIdVinculo(proximoValor("vinculo"));
+
         UpdateResult resultado = collection.updateOne(
                 Filters.eq("mat_estudante", matricula),
                 Updates.push("vinculo", novoVinculo)
@@ -104,6 +108,15 @@ public class EstudanteMongoDAO extends BaseMonDao {
         UpdateResult resultado = collection.updateOne(
                 Filters.eq("mat_estudante", matricula),
                 Updates.pull("vinculo", Filters.eq("idCurso", idCurso))
+        );
+        return resultado.getModifiedCount() > 0;
+    }
+
+    // Remove o vínculo pelo idVinculo (PK do próprio vínculo)
+    public boolean removerVinculoPorId(String matricula, int idVinculo) {
+        UpdateResult resultado = collection.updateOne(
+                Filters.eq("mat_estudante", matricula),
+                Updates.pull("vinculo", Filters.eq("idVinculo", idVinculo))
         );
         return resultado.getModifiedCount() > 0;
     }
