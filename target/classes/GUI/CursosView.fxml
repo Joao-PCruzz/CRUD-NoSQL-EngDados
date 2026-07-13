@@ -29,16 +29,16 @@
                                 <Label text="Gerenciamento do Catálogo Académico NoSQL" textFill="#7f8c8d" />
                             </children>
                         </VBox>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="[+] Adicionar Curso" />
-                        <Button mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="Atualizar Curso" />
-                        <Button mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="Deletar Curso" />
+                        <Button fx:id="btnNovo" mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="[+] Adicionar Curso" />
+                        <Button fx:id="btnAtualizar" mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="Atualizar Curso" />
+                        <Button fx:id="btnDeletar" mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="Deletar Curso" />
                     </children>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                     <children>
                         <TextField fx:id="txtBusca" promptText="Pesquisar Curso (Nome ou Código)..." HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" prefWidth="100.0" text="Pesquisar" />
+                        <Button fx:id="btnPesquisar" mnemonicParsing="false" prefWidth="100.0" text="Pesquisar" />
                     </children>
                 </HBox>
 
@@ -47,7 +47,7 @@
                         <TableView fx:id="tabelaCursos" HBox.hgrow="ALWAYS">
                             <columns>
                                 <TableColumn fx:id="colIdCurso" style="-fx-alignment: CENTER;" text="Id Curso" />
-                                <TableColumn fx:id="colNome" style="-fx-alignment: CENTER-LEFT;" text="Nome do Curso" />
+                                <TableColumn fx:id="colNomeCurso" style="-fx-alignment: CENTER-LEFT;" text="Nome do Curso" />
                                 <TableColumn fx:id="colGrau" style="-fx-alignment: CENTER;" text="Grau" />
                                 <TableColumn fx:id="colTurno" style="-fx-alignment: CENTER;" text="Turno" />
                                 <TableColumn fx:id="colCampus" style="-fx-alignment: CENTER;" text="Campus" />
