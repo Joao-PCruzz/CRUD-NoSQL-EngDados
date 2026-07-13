@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://github.com/javafx/fxml/1" fx:controller="controller.EstudantesController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f4f6f9;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EstudantesController">
     <children>
         <VBox spacing="15.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
             <children>
@@ -30,16 +30,16 @@
                                 <Label text="Controle Central de Matrículas e Vínculos" textFill="#7f8c8d" />
                             </children>
                         </VBox>
-                        <Button mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="[+] Adicionar Estudante" />
-                        <Button mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="Atualizar Estudante" />
-                        <Button mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="Deletar Estudante" />
+                        <Button fx:id="btnNovo" mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="[+] Adicionar Estudante" />
+                        <Button fx:id="btnAtualizar" mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="Atualizar Estudante" />
+                        <Button fx:id="btnDeletar" mnemonicParsing="false" style="-fx-background-color: #014da3; -fx-text-fill: white; -fx-font-weight: bold;" text="Deletar Estudante" />
                     </children>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                     <children>
                         <TextField fx:id="txtBusca" promptText="Pesquisar Estudante (Matrícula)..." HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" prefWidth="100.0" text="Pesquisar" />
+                        <Button fx:id="btnPesquisar" mnemonicParsing="false" prefWidth="100.0" text="Pesquisar" />
                     </children>
                 </HBox>
 
